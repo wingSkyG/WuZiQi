@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 public class GameStart : MonoBehaviour
 {
+    private Ctrl _ctrl = new Ctrl();
+    
     void Start()
     {
         
@@ -10,10 +12,6 @@ public class GameStart : MonoBehaviour
     
     void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            var asset = Resources.Load($"Prefabs/blackPiece");
-            Instantiate(asset, GameObject.Find("Pieces").gameObject.transform);
-        }
+        _ctrl.Update();
     }
 }
