@@ -1,8 +1,5 @@
-﻿public class PieceEnum
+﻿public enum PieceEnum
 {
-    public enum PieceType
-    {
-        BlackPiece,
-        WhitePiece,
-    }
+    BlackPiece,
+    WhitePiece,
 }

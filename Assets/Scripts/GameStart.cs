@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class GameStart : MonoBehaviour
 {
-    private Ctrl _ctrl = new Ctrl();
+    private GameCtrl _gameCtrl = new GameCtrl();
     
     void Start()
     {
@@ -12,6 +12,6 @@ public class GameStart : MonoBehaviour
     
     void Update()
     {
-        _ctrl.Update();
+        _gameCtrl.Update();
     }
 }
