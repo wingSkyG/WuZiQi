@@ -6,18 +6,18 @@ public class GameModel
     private static int _boardSize = 21;
     public PieceEnum[,] BoardMap = new PieceEnum[_boardSize, _boardSize];
 
-    public Tuple<float, float, PieceEnum> AddPiece(Vector3 clickScreenPos)
+    public PieceInfo AddPieceToBoardMap(Vector3 clickScreenPos)
     {
         var clickWorldPos = Utils.TransScreenPosToWorldPos(clickScreenPos);
-        return CalculateIndexInBoard(clickWorldPos);
+        return CalculatePieceIndexInBoardMap(clickWorldPos);
     }
     
-    public bool IsClickInsideBoard(Vector3 clickPos, GameObject boardArea)
+    public bool IsClickPlaceAreaOfBoard(Vector3 clickScreenPos, GameObject boardArea)
     {
-        var worldPos = Utils.TransScreenPosToWorldPos(clickPos);
+        var worldPos = Utils.TransScreenPosToWorldPos(clickScreenPos);
         var localClickPos = boardArea.transform.InverseTransformPoint(worldPos);
-        var bounds = boardArea.gameObject.GetComponent<SpriteRenderer>().sprite.bounds;
         
+        var bounds = boardArea.gameObject.GetComponent<SpriteRenderer>().sprite.bounds;
         Vector3 minBound = bounds.min;
         Vector3 maxBound = bounds.max;
         Vector3 center = bounds.center;
@@ -27,7 +27,7 @@ public class GameModel
         return isInsideBounds;
     }
     
-    private Tuple<float, float, PieceEnum> CalculateIndexInBoard(Vector3 clickWorldPos)
+    private PieceInfo CalculatePieceIndexInBoardMap(Vector3 clickWorldPos)
     {
         var lowerLeftCornerX = GameObject.Find("LowerLeftCorner").gameObject.transform.position.x;
         var lowerLeftCornerY = GameObject.Find("LowerLeftCorner").gameObject.transform.position.y;
@@ -35,26 +35,28 @@ public class GameModel
         var boardWidth = upperRightCornerX - lowerLeftCornerX;
         var boardCellSize = boardWidth / 20;
         var halfOfBoardCellSize = boardCellSize / 2;
-        Debug.Log($"lowerLeftCornerX:{lowerLeftCornerX}");
-        Debug.Log($"upperRightCornerX:{upperRightCornerX}");
-        Debug.Log($"boardWidth:{boardWidth}");
-        Debug.Log($"boardCellSize:{boardCellSize}");
-        Debug.Log($"halfOfBoardCellSize:{halfOfBoardCellSize}");
-        Debug.Log($"pieceWorldPos:{clickWorldPos}");
 
         var indexXTemp = Mathf.Abs(clickWorldPos.x - lowerLeftCornerX) / boardCellSize;
         var indexYTemp = Mathf.Abs(clickWorldPos.y - lowerLeftCornerY) / boardCellSize;
         var indexXRemainder = Mathf.Abs(clickWorldPos.x - lowerLeftCornerX) % boardCellSize;
         var indexYRemainder = Mathf.Abs(clickWorldPos.y - lowerLeftCornerY) % boardCellSize;
-
         var indexX = indexXRemainder > halfOfBoardCellSize ? Mathf.CeilToInt(indexXTemp) : Mathf.FloorToInt(indexXTemp);
         var indexY = indexYRemainder > halfOfBoardCellSize ? Mathf.CeilToInt(indexYTemp) : Mathf.FloorToInt(indexYTemp);
-        Debug.Log($"indexX:{indexX}, indexY:{indexY}");
-        
+
         var clickWorldPosX = lowerLeftCornerX + indexX * boardCellSize;
         var clickWorldPosY = lowerLeftCornerY + indexY * boardCellSize;
-        Debug.Log($"clickWorldPosX:{clickWorldPosX}, clickWorldPosY:{clickWorldPosY}");
         
-        return new Tuple<float, float, PieceEnum>(clickWorldPosX, clickWorldPosY, PieceEnum.BlackPiece);
+        // Debug.Log($"lowerLeftCornerX:{lowerLeftCornerX}");
+        // Debug.Log($"upperRightCornerX:{upperRightCornerX}");
+        // Debug.Log($"boardWidth:{boardWidth}");
+        // Debug.Log($"boardCellSize:{boardCellSize}");
+        // Debug.Log($"halfOfBoardCellSize:{halfOfBoardCellSize}");
+        // Debug.Log($"pieceWorldPos:{clickWorldPos}");
+        // Debug.Log($"indexX:{indexX}, indexY:{indexY}");
+        // Debug.Log($"clickWorldPosX:{clickWorldPosX}, clickWorldPosY:{clickWorldPosY}");
+        
+        // return new PieceInfo { IndexXInBoardMap = clickWorldPosX, IndexYInBoardMap = clickWorldPosY, PieceType = PieceEnum.BlackPiece };
+        // return new PieceInfo { new Vector2(clickWorldPosX, clickWorldPosY), PieceType = PieceEnum.BlackPiece };
+        return new PieceInfo(new Vector2(clickWorldPosX, clickWorldPosY), PieceEnum.BlackPiece);
     }
 }

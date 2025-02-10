@@ -10,10 +10,21 @@ public class GameCtrl
     
     public void Update()
     {
-        if (Input.Instance.IsClickMouseLeftButton() && _gameModel.IsClickInsideBoard(Input.Instance.GetClickPos(), GameObject.Find("BoardArea")))
+        if (IsClickInsidePlaceArea())
         {
-            var pieceInfo = _gameModel.AddPiece(Input.Instance.GetClickPos());
-            new Piece(pieceInfo);
+            // var piceInfo = new PieceInfo()
+            var pieceInfo = _gameModel.AddPieceToBoardMap(Input.Instance.GetClickPos());
+            var piece = new Piece(pieceInfo);
         }
+    }
+
+    /// <summary>
+    /// 鼠标是否点击了落子区
+    /// </summary>
+    /// <returns></returns>
+    private bool IsClickInsidePlaceArea()
+    {
+        return Input.Instance.IsClickMouseLeftButton() &&
+               _gameModel.IsClickPlaceAreaOfBoard(Input.Instance.GetClickPos(), GameObject.Find("BoardArea"));
     }
 }
