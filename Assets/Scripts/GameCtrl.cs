@@ -5,16 +5,20 @@ using UnityEngine.InputSystem;
 
 public class GameCtrl
 {
-    // private Piece _piece = new Piece();
-    private GameModel _gameModel = new GameModel();
+    private GameModel _gameModel;
+    private Round _round;
+
+    public GameCtrl()
+    {
+        _gameModel = new GameModel();
+        _round = new Round(new BlackPlayState());
+    }
     
     public void Update()
     {
         if (IsClickInsidePlaceArea())
         {
-            // var piceInfo = new PieceInfo()
-            var pieceInfo = _gameModel.AddPieceToBoardMap(Input.Instance.GetClickPos());
-            var piece = new Piece(pieceInfo);
+            _round.PlacePiece(_gameModel);
         }
     }
 
@@ -25,6 +29,6 @@ public class GameCtrl
     private bool IsClickInsidePlaceArea()
     {
         return Input.Instance.IsClickMouseLeftButton() &&
-               _gameModel.IsClickPlaceAreaOfBoard(Input.Instance.GetClickPos(), GameObject.Find("BoardArea"));
+               _gameModel.IsClickPlaceAreaOfBoard(Input.Instance.GetClickScreenPos(), GameObject.Find("BoardArea"));
     }
 }

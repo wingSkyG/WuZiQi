@@ -3,11 +3,11 @@ using UnityEngine.InputSystem;
 
 public class GameStart : MonoBehaviour
 {
-    private GameCtrl _gameCtrl = new GameCtrl();
+    private GameCtrl _gameCtrl;
     
     void Start()
     {
-        
+        _gameCtrl = new GameCtrl();
     }
     
     void Update()

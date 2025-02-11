@@ -21,13 +21,21 @@ public class Input
 
     private Input() { }
 
+    public Vector2 GetClickWorldPos()
+    {
+        var clickScreenPos = GetClickScreenPos();
+        var clickWorldPos = Utils.TransScreenPosToWorldPos(clickScreenPos);
+        
+        return clickWorldPos;
+    }
+    
+    public Vector2 GetClickScreenPos()
+    {
+        return Mouse.current.position.ReadValue();
+    }
+
     public bool IsClickMouseLeftButton()
     {
         return Mouse.current.leftButton.wasPressedThisFrame;
-    }
-
-    public Vector2 GetClickPos()
-    {
-        return Mouse.current.position.ReadValue();
     }
 }
