@@ -1,9 +1,11 @@
-﻿public class PieceBase
-{
-    public PieceInfo PieceInfo;
+﻿using UnityEngine;
 
-    public PieceBase(PieceInfo pieceInfo)
+public class PieceBase
+{
+    public Vector2 PiecePos;
+
+    public PieceBase(Vector2 piecePos)
     {
-        PieceInfo = pieceInfo;
+        PiecePos = piecePos;
     }
 }

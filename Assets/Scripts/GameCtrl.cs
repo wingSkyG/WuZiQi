@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,9 +20,12 @@ public class GameCtrl
         if (IsClickInsidePlaceArea())
         {
             _gameModel.CalcuteCrossPointCoordAndIndexCoordOfClickPoint(Input.Instance.GetClickWorldPos());
-            var pieceInfo = new PieceInfo(_gameModel.GetWorldPosOfCrossPoint(), PieceEnum.BlackPiece);
-            // _gameModel.UpdateBoardMap(piece);
-            var piece = _round.CreatePiece(pieceInfo);
+            
+            var piece = _round.CreatePiece(_gameModel.GetWorldPosOfCrossPoint());
+            
+            _gameModel.UpdateBoardMap(piece);
+            
+            Debug.Log( _gameModel.GetIndexPosOfPlacedPiece());
         }
     }
 

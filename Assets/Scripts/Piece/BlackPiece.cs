@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class BlackPiece : PieceBase
 {
-    public BlackPiece(PieceInfo pieceInfo) : base(pieceInfo)
+    public BlackPiece(Vector2 piecePos) : base(piecePos)
     {
-        PieceInfo = pieceInfo;
-
+        PiecePos = piecePos;
+    
         var prefabAsset = Resources.Load($"Prefabs/blackPiece");
         var obj = Object.Instantiate(prefabAsset, GameObject.Find("Pieces").gameObject.transform) as GameObject;
-        obj.GameObject().transform.position = new Vector3(PieceInfo.IndexInBoardMap.x, pieceInfo.IndexInBoardMap.y, -1);
+        obj.GameObject().transform.position = new Vector3(PiecePos.x, PiecePos.y, -1);
     }
 }

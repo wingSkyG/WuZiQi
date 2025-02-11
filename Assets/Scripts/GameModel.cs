@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class GameModel
 {
     private static int _boardSize = 21;
-    public PieceEnum[,] BoardMap = new PieceEnum[_boardSize, _boardSize];
+    public CrossPointStateEnum[,] BoardMap = new CrossPointStateEnum[_boardSize, _boardSize];
 
     private float lowerLeftCornerX;
     private float lowerLeftCornerY;
@@ -33,9 +35,47 @@ public class GameModel
         halfOfBoardCellSize = boardCellSize / 2;
     }
 
+    public string GetIndexPosOfPlacedPiece()
+    {
+        var indexPosOfPlacedPieceDict = new Dictionary<Vector2, CrossPointStateEnum>();
+        var sb = new StringBuilder();
+
+        for (int i = 0; i < _boardSize; i++)
+        {
+            for (int j = 0; j < _boardSize; j++)
+            {
+                
+                if (BoardMap[i,j] == CrossPointStateEnum.Empty)
+                {
+                    continue;
+                }
+
+                indexPosOfPlacedPieceDict.Add(new Vector2(i, j), BoardMap[i, j]);
+            }
+        }
+
+        foreach (var kvp in indexPosOfPlacedPieceDict)
+        {
+            sb.Append($"{kvp.Key} : {kvp.Value}\n");
+        }
+        string combinedInfo = sb.ToString();
+        
+        return combinedInfo;
+    }
+    
     public void UpdateBoardMap(PieceBase pieceBase)
     {
-        BoardMap[_indexXOfCrossPoint, _indexYOfCrossPoint] = pieceBase.PieceInfo.PieceType;
+        
+        if (pieceBase.GetType() == typeof(BlackPiece))
+        {
+            BoardMap[_indexXOfCrossPoint, _indexYOfCrossPoint] = CrossPointStateEnum.BlackPiece;
+            return;
+        }
+        
+        if (pieceBase.GetType() == typeof(WhitePiece))
+        {
+            BoardMap[_indexXOfCrossPoint, _indexYOfCrossPoint] = CrossPointStateEnum.WhitePiece;
+        }
     }
 
     public Vector2 GetIndexCoordOfCrossPoint()
@@ -96,29 +136,29 @@ public class GameModel
         return isInsideBounds;
     }
 
-    private PieceInfo CalculatePieceIndexInBoardMap(Vector3 clickWorldPos)
-    {
-        var indexXTemp = Mathf.Abs(clickWorldPos.x - lowerLeftCornerX) / boardCellSize;
-        var indexYTemp = Mathf.Abs(clickWorldPos.y - lowerLeftCornerY) / boardCellSize;
-        var indexXRemainder = Mathf.Abs(clickWorldPos.x - lowerLeftCornerX) % boardCellSize;
-        var indexYRemainder = Mathf.Abs(clickWorldPos.y - lowerLeftCornerY) % boardCellSize;
-        var indexX = indexXRemainder > halfOfBoardCellSize ? Mathf.CeilToInt(indexXTemp) : Mathf.FloorToInt(indexXTemp);
-        var indexY = indexYRemainder > halfOfBoardCellSize ? Mathf.CeilToInt(indexYTemp) : Mathf.FloorToInt(indexYTemp);
-
-        var clickWorldPosX = lowerLeftCornerX + indexX * boardCellSize;
-        var clickWorldPosY = lowerLeftCornerY + indexY * boardCellSize;
-        
-        // Debug.Log($"lowerLeftCornerX:{lowerLeftCornerX}");
-        // Debug.Log($"upperRightCornerX:{upperRightCornerX}");
-        // Debug.Log($"boardWidth:{boardWidth}");
-        // Debug.Log($"boardCellSize:{boardCellSize}");
-        // Debug.Log($"halfOfBoardCellSize:{halfOfBoardCellSize}");
-        // Debug.Log($"pieceWorldPos:{clickWorldPos}");
-        // Debug.Log($"indexX:{indexX}, indexY:{indexY}");
-        // Debug.Log($"clickWorldPosX:{clickWorldPosX}, clickWorldPosY:{clickWorldPosY}");
-        
-        // return new PieceInfo { IndexXInBoardMap = clickWorldPosX, IndexYInBoardMap = clickWorldPosY, PieceType = PieceEnum.BlackPiece };
-        // return new PieceInfo { new Vector2(clickWorldPosX, clickWorldPosY), PieceType = PieceEnum.BlackPiece };
-        return new PieceInfo(new Vector2(clickWorldPosX, clickWorldPosY), PieceEnum.BlackPiece);
-    }
+    // private PieceInfo CalculatePieceIndexInBoardMap(Vector3 clickWorldPos)
+    // {
+    //     var indexXTemp = Mathf.Abs(clickWorldPos.x - lowerLeftCornerX) / boardCellSize;
+    //     var indexYTemp = Mathf.Abs(clickWorldPos.y - lowerLeftCornerY) / boardCellSize;
+    //     var indexXRemainder = Mathf.Abs(clickWorldPos.x - lowerLeftCornerX) % boardCellSize;
+    //     var indexYRemainder = Mathf.Abs(clickWorldPos.y - lowerLeftCornerY) % boardCellSize;
+    //     var indexX = indexXRemainder > halfOfBoardCellSize ? Mathf.CeilToInt(indexXTemp) : Mathf.FloorToInt(indexXTemp);
+    //     var indexY = indexYRemainder > halfOfBoardCellSize ? Mathf.CeilToInt(indexYTemp) : Mathf.FloorToInt(indexYTemp);
+    //
+    //     var clickWorldPosX = lowerLeftCornerX + indexX * boardCellSize;
+    //     var clickWorldPosY = lowerLeftCornerY + indexY * boardCellSize;
+    //     
+    //     // Debug.Log($"lowerLeftCornerX:{lowerLeftCornerX}");
+    //     // Debug.Log($"upperRightCornerX:{upperRightCornerX}");
+    //     // Debug.Log($"boardWidth:{boardWidth}");
+    //     // Debug.Log($"boardCellSize:{boardCellSize}");
+    //     // Debug.Log($"halfOfBoardCellSize:{halfOfBoardCellSize}");
+    //     // Debug.Log($"pieceWorldPos:{clickWorldPos}");
+    //     // Debug.Log($"indexX:{indexX}, indexY:{indexY}");
+    //     // Debug.Log($"clickWorldPosX:{clickWorldPosX}, clickWorldPosY:{clickWorldPosY}");
+    //     
+    //     // return new PieceInfo { IndexXInBoardMap = clickWorldPosX, IndexYInBoardMap = clickWorldPosY, PieceType = PieceEnum.BlackPiece };
+    //     // return new PieceInfo { new Vector2(clickWorldPosX, clickWorldPosY), PieceType = PieceEnum.BlackPiece };
+    //     return new PieceInfo(new Vector2(clickWorldPosX, clickWorldPosY), CorssPointStateEnum.BlackPiece);
+    // }
 }

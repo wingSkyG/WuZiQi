@@ -1,22 +1,20 @@
-﻿public class BlackPlayState : PlayStateBase
-{
-    public override PieceBase CreatePiece(Round round, PieceInfo pieceInfo)
-    {
-        base.CreatePiece(round, pieceInfo);
+﻿using UnityEngine;
 
-        var piece = PlaceBlackPiece(pieceInfo);
+public class BlackPlayState : PlayStateBase
+{
+    public override PieceBase CreatePiece(Round round, Vector2 piecePos)
+    {
+        base.CreatePiece(round, piecePos);
+
+        var piece = PlaceBlackPiece(piecePos);
         round.ChangeState(new WhitePlayState());
 
         return piece;
     }
 
-    public PieceBase PlaceBlackPiece(PieceInfo pieceInfo)
+    public PieceBase PlaceBlackPiece(Vector2 piecePos)
     {
-        // var pieceInfo = new PieceInfo(gameModel.GetWorldPosOfCrossPoint(), PieceEnum.BlackPiece);
-        // var piece = new Piece(pieceInfo);
-
-        // var piece = new Piece(pieceInfo);
-        var piece = new BlackPiece(pieceInfo);
+        var piece = new BlackPiece(piecePos);
 
         return piece;
     }

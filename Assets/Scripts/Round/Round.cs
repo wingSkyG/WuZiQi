@@ -1,4 +1,6 @@
-﻿public class Round
+﻿using UnityEngine;
+
+public class Round
 {
     private PlayStateBase _playState;
 
@@ -12,8 +14,8 @@
         _playState = playState;
     }
 
-    public PieceBase CreatePiece(PieceInfo pieceInfo)
+    public PieceBase CreatePiece(Vector2 piecePos)
     {
-        return _playState.CreatePiece(this, pieceInfo);
+        return _playState.CreatePiece(this, piecePos);
     }
 }

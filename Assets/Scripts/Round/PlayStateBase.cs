@@ -1,7 +1,9 @@
-﻿public abstract class PlayStateBase
+﻿using UnityEngine;
+
+public abstract class PlayStateBase
 {
-    public virtual PieceBase CreatePiece(Round round, PieceInfo pieceInfo)
+    public virtual PieceBase CreatePiece(Round round, Vector2 piecePos)
     {
-        return new PieceBase(pieceInfo);
+        return new PieceBase(piecePos);
     }
 }
