@@ -18,7 +18,10 @@ public class GameCtrl
     {
         if (IsClickInsidePlaceArea())
         {
-            _round.PlacePiece(_gameModel);
+            _gameModel.CalcuteCrossPointCoordAndIndexCoordOfClickPoint(Input.Instance.GetClickWorldPos());
+            var pieceInfo = new PieceInfo(_gameModel.GetWorldPosOfCrossPoint(), PieceEnum.BlackPiece);
+            // _gameModel.UpdateBoardMap(piece);
+            var piece = _round.CreatePiece(pieceInfo);
         }
     }
 

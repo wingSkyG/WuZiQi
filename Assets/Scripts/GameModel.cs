@@ -13,6 +13,11 @@ public class GameModel
     private float boardCellSize;
     private float halfOfBoardCellSize;
 
+    private float _worldPosXOfCrossPoint;
+    private float _worldPosYOfCrossPoint;
+    private int _indexXOfCrossPoint;
+    private int _indexYOfCrossPoint;
+
     public GameModel()
     {
         InitBoardData();
@@ -28,10 +33,46 @@ public class GameModel
         halfOfBoardCellSize = boardCellSize / 2;
     }
 
-    public PieceInfo AddPieceToBoardMap(Vector3 clickScreenPos)
+    public void UpdateBoardMap(PieceBase pieceBase)
     {
-        var clickWorldPos = Utils.TransScreenPosToWorldPos(clickScreenPos);
-        return CalculatePieceIndexInBoardMap(clickWorldPos);
+        BoardMap[_indexXOfCrossPoint, _indexYOfCrossPoint] = pieceBase.PieceInfo.PieceType;
+    }
+
+    public Vector2 GetIndexCoordOfCrossPoint()
+    {
+        return new Vector2(_indexXOfCrossPoint, _indexYOfCrossPoint);
+    }
+
+    public Vector2 GetWorldPosOfCrossPoint()
+    {
+        return new Vector2(_worldPosXOfCrossPoint, _worldPosYOfCrossPoint);
+    }
+    
+    /// <summary>
+    /// 计算距离点击点最近的网格交叉点的世界坐标和地图坐标
+    /// </summary>
+    /// <returns></returns>
+    public void CalcuteCrossPointCoordAndIndexCoordOfClickPoint(Vector3 clickWorldPos)
+    {
+        var indexXInt = Mathf.Abs(clickWorldPos.x - lowerLeftCornerX) / boardCellSize;
+        var indexYInt = Mathf.Abs(clickWorldPos.y - lowerLeftCornerY) / boardCellSize;
+        var indexXRemainder = Mathf.Abs(clickWorldPos.x - lowerLeftCornerX) % boardCellSize;
+        var indexYRemainder = Mathf.Abs(clickWorldPos.y - lowerLeftCornerY) % boardCellSize;
+        
+        _indexXOfCrossPoint = indexXRemainder > halfOfBoardCellSize ? Mathf.CeilToInt(indexXInt) : Mathf.FloorToInt(indexXInt);
+        _indexYOfCrossPoint = indexYRemainder > halfOfBoardCellSize ? Mathf.CeilToInt(indexYInt) : Mathf.FloorToInt(indexYInt);
+
+        _worldPosXOfCrossPoint = lowerLeftCornerX + _indexXOfCrossPoint * boardCellSize;
+        _worldPosYOfCrossPoint = lowerLeftCornerY + _indexYOfCrossPoint * boardCellSize;
+        
+        // Debug.Log($"lowerLeftCornerX:{lowerLeftCornerX}");
+        // Debug.Log($"upperRightCornerX:{upperRightCornerX}");
+        // Debug.Log($"boardWidth:{boardWidth}");
+        // Debug.Log($"boardCellSize:{boardCellSize}");
+        // Debug.Log($"halfOfBoardCellSize:{halfOfBoardCellSize}");
+        // Debug.Log($"pieceWorldPos:{clickWorldPos}");
+        // Debug.Log($"indexX:{indexX}, indexY:{indexY}");
+        // Debug.Log($"crossPointWorldPosX:{crossPointWorldPosX}, crossPointWorldPosY:{crossPointWorldPosY}");
     }
 
     /// <summary>
@@ -53,34 +94,6 @@ public class GameModel
                                                             && localClickPos.y >= minBound.y &&
                                                             localClickPos.y <= maxBound.y;
         return isInsideBounds;
-    }
-
-    /// <summary>
-    /// 计算距离点击点最近的网格交叉点坐标
-    /// </summary>
-    /// <returns></returns>
-    public Vector2 CalcuteNearestCoordinateOfCrossPointOfClickPoint(Vector3 clickWorldPos)
-    {
-        var indexXInt = Mathf.Abs(clickWorldPos.x - lowerLeftCornerX) / boardCellSize;
-        var indexYInt = Mathf.Abs(clickWorldPos.y - lowerLeftCornerY) / boardCellSize;
-        var indexXRemainder = Mathf.Abs(clickWorldPos.x - lowerLeftCornerX) % boardCellSize;
-        var indexYRemainder = Mathf.Abs(clickWorldPos.y - lowerLeftCornerY) % boardCellSize;
-        var indexX = indexXRemainder > halfOfBoardCellSize ? Mathf.CeilToInt(indexXInt) : Mathf.FloorToInt(indexXInt);
-        var indexY = indexYRemainder > halfOfBoardCellSize ? Mathf.CeilToInt(indexYInt) : Mathf.FloorToInt(indexYInt);
-
-        var crossPointWorldPosX = lowerLeftCornerX + indexX * boardCellSize;
-        var crossPointWorldPosY = lowerLeftCornerY + indexY * boardCellSize;
-        
-        // Debug.Log($"lowerLeftCornerX:{lowerLeftCornerX}");
-        // Debug.Log($"upperRightCornerX:{upperRightCornerX}");
-        // Debug.Log($"boardWidth:{boardWidth}");
-        // Debug.Log($"boardCellSize:{boardCellSize}");
-        // Debug.Log($"halfOfBoardCellSize:{halfOfBoardCellSize}");
-        // Debug.Log($"pieceWorldPos:{clickWorldPos}");
-        // Debug.Log($"indexX:{indexX}, indexY:{indexY}");
-        // Debug.Log($"crossPointWorldPosX:{crossPointWorldPosX}, crossPointWorldPosY:{crossPointWorldPosY}");
-
-        return new Vector2(crossPointWorldPosX, crossPointWorldPosY);
     }
 
     private PieceInfo CalculatePieceIndexInBoardMap(Vector3 clickWorldPos)

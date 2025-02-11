@@ -12,8 +12,8 @@
         _playState = playState;
     }
 
-    public void PlacePiece(GameModel gameModel)
+    public PieceBase CreatePiece(PieceInfo pieceInfo)
     {
-        _playState.PlacePiece(this, gameModel);
+        return _playState.CreatePiece(this, pieceInfo);
     }
 }
