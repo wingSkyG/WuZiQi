@@ -34,7 +34,7 @@ public class Input
         return Mouse.current.position.ReadValue();
     }
 
-    public bool IsClickMouseLeftButton()
+    public bool IsMouseLeftButtonClicked()
     {
         return Mouse.current.leftButton.wasPressedThisFrame;
     }

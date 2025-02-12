@@ -1,41 +1,29 @@
-﻿using System;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using UnityEngine;
 
 public class GameCtrl
 {
-    private GameModel _gameModel;
+    private Map _map;
     private Round _round;
+    private Judgment _judgment;
+    private Board _board;
 
     public GameCtrl()
     {
-        _gameModel = new GameModel();
+        _map = new Map();
         _round = new Round(new BlackPlayState());
+        _board = new Board();
     }
     
     public void Update()
     {
-        if (IsClickInsidePlaceArea())
+        if (_board.IsClicked())
         {
-            _gameModel.CalcuteCrossPointCoordAndIndexCoordOfClickPoint(Input.Instance.GetClickWorldPos());
+            var piece = _round.CreatePiece(_board.GetWorldCoord());
             
-            var piece = _round.CreatePiece(_gameModel.GetWorldPosOfCrossPoint());
+            _map.UpdateBoardMap(_board.GetIndexCoord(), piece);
             
-            _gameModel.UpdateBoardMap(piece);
-            
-            Debug.Log( _gameModel.GetIndexPosOfPlacedPiece());
+            // Debug.Log(_map.IsFivePieceInLine());
+            Debug.Log( _map.GetIndexPosOfPlacedPiece());
         }
-    }
-
-    /// <summary>
-    /// 鼠标是否点击了落子区
-    /// </summary>
-    /// <returns></returns>
-    private bool IsClickInsidePlaceArea()
-    {
-        return Input.Instance.IsClickMouseLeftButton() &&
-               _gameModel.IsClickPlaceAreaOfBoard(Input.Instance.GetClickScreenPos(), GameObject.Find("BoardArea"));
     }
 }
