@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class Map
+public class IntersectionMap
 {
     private static int _boardSize = 21;
     private CrossPointStateEnum[,] _mapArray = new CrossPointStateEnum[_boardSize, _boardSize];
 
     private FiveSameElementsLinkedIterator _linkedIterator;
 
-    public Map()
+    public IntersectionMap()
     {
         _linkedIterator = new FiveSameElementsLinkedIterator(_mapArray);
     }
@@ -32,6 +32,23 @@ public class Map
         if (pieceBase.GetType() == typeof(WhitePiece))
         {
             _mapArray[indexCoord.x, indexCoord.y] = CrossPointStateEnum.WhitePiece;
+        }
+    }
+
+    public void ResetBoardMap()
+    {
+        for (int i = 0; i < _boardSize; i++)
+        {
+            for (int j = 0; j < _boardSize; j++)
+            {
+
+                if (_mapArray[i,j] == CrossPointStateEnum.Empty)
+                {
+                    continue;
+                }
+
+                _mapArray[i, j] = CrossPointStateEnum.Empty;
+            }
         }
     }
 

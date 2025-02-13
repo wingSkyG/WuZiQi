@@ -2,16 +2,19 @@
 
 public class GameCtrl
 {
-    private Map _map;
+    private IntersectionMap _intersectionMap;
+    private PieceMap _pieceMap;
     private Round _round;
-    private Judgment _judgment;
     private Board _board;
+    private GameResultView _gameResultView;
 
     public GameCtrl()
     {
-        _map = new Map();
+        _intersectionMap = new IntersectionMap();
+        _pieceMap = new PieceMap();
         _round = new Round(new BlackPlayState());
         _board = new Board();
+        _gameResultView = new GameResultView();
     }
     
     public void Update()
@@ -20,10 +23,23 @@ public class GameCtrl
         {
             var piece = _round.CreatePiece(_board.GetWorldCoord());
             
-            _map.UpdateBoardMap(_board.GetIndexCoord(), piece);
+            _intersectionMap.UpdateBoardMap(_board.GetIndexCoord(), piece);
+            _pieceMap.UpdatePieceMap(_board.GetIndexCoord(), piece);
+
+            if (_intersectionMap.IsFivePiecesLinked(_board.GetIndexCoord()))
+            {
+                _gameResultView.Open(piece);
+                // ResetGame();
+            }
             
-            Debug.Log(_map.IsFivePiecesLinked(_board.GetIndexCoord()));
-            // Debug.Log( _map.GetIndexPosOfPlacedPiece());
+            // Debug.Log(_map.IsFivePiecesLinked(_board.GetIndexCoord()));
         }
+    }
+
+    private void ResetGame()
+    {
+        _intersectionMap.ResetBoardMap();
+        _pieceMap.ResetPieceMap();
+        _gameResultView.ClearGameResult();
     }
 }
