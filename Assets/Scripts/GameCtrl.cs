@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class GameCtrl
 {
@@ -7,6 +8,7 @@ public class GameCtrl
     private Round _round;
     private Board _board;
     private GameResultView _gameResultView;
+    private Button _btnReset;
 
     public GameCtrl()
     {
@@ -15,6 +17,9 @@ public class GameCtrl
         _round = new Round(new BlackPlayState());
         _board = new Board();
         _gameResultView = new GameResultView();
+
+        _btnReset = GameObject.Find("BtnReset").GetComponent<Button>();
+        _btnReset.onClick.AddListener(ResetGame);
     }
     
     public void Update()
@@ -28,8 +33,7 @@ public class GameCtrl
 
             if (_intersectionMap.IsFivePiecesLinked(_board.GetIndexCoord()))
             {
-                _gameResultView.Open(piece);
-                // ResetGame();
+                _gameResultView.DisplayResultText(piece);
             }
             
             // Debug.Log(_map.IsFivePiecesLinked(_board.GetIndexCoord()));

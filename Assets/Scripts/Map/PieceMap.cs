@@ -22,7 +22,9 @@ public class PieceMap
                     continue;
                 }
 
-                _mapArray[i, j] = null;
+                // 不能删除棋子
+                var obj = _mapArray[i, j];
+                GameObject.Destroy(GameObject.Find(obj.GetType().Name));
             }
         }
     }
