@@ -22,8 +22,8 @@ public class GameCtrl
             
             _map.UpdateBoardMap(_board.GetIndexCoord(), piece);
             
-            // Debug.Log(_map.IsFivePieceInLine());
-            Debug.Log( _map.GetIndexPosOfPlacedPiece());
+            Debug.Log(_map.IsFivePiecesLinked(_board.GetIndexCoord()));
+            // Debug.Log( _map.GetIndexPosOfPlacedPiece());
         }
     }
 }

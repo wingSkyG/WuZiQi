@@ -6,43 +6,32 @@ using UnityEngine;
 public class Map
 {
     private static int _boardSize = 21;
-    public CrossPointStateEnum[,] MapArray = new CrossPointStateEnum[_boardSize, _boardSize];
+    private CrossPointStateEnum[,] _mapArray = new CrossPointStateEnum[_boardSize, _boardSize];
 
-    // public bool IsFivePieceInLine()
-    // {
-    //     Vector2Int currentIndex = GetIndexCoordOfCrossPoint();
-    //     var currentPieceType = MapData[currentIndex.x, currentIndex.y];
-    //
-    //     var pieceNum = 0;
-    //     
-    //     Debug.Log($"currentPieceType:{currentPieceType}");
-    //     Debug.Log($"currentIndex:{currentIndex}");
-    //     for (var i = 1; i <= 4; i++)
-    //     {
-    //         if (MapData[currentIndex.x - i, currentIndex.y] != currentPieceType)
-    //         {
-    //             pieceNum = 0;
-    //             continue;
-    //         }
-    //         pieceNum++;
-    //     }
-    //     
-    //     Debug.Log($"pieceNum:{pieceNum}");
-    //     return pieceNum + 1 == 5;
-    // }
+    private FiveSameElementsLinkedIterator _linkedIterator;
+
+    public Map()
+    {
+        _linkedIterator = new FiveSameElementsLinkedIterator(_mapArray);
+    }
+
+    public bool IsFivePiecesLinked(Vector2Int indexCoord)
+    {
+        return _linkedIterator.IsLinked(indexCoord);
+    }
 
     public void UpdateBoardMap(Vector2Int indexCoord, PieceBase pieceBase)
     {
         
         if (pieceBase.GetType() == typeof(BlackPiece))
         {
-            MapArray[indexCoord.x, indexCoord.y] = CrossPointStateEnum.BlackPiece;
+            _mapArray[indexCoord.x, indexCoord.y] = CrossPointStateEnum.BlackPiece;
             return;
         }
         
         if (pieceBase.GetType() == typeof(WhitePiece))
         {
-            MapArray[indexCoord.x, indexCoord.y] = CrossPointStateEnum.WhitePiece;
+            _mapArray[indexCoord.x, indexCoord.y] = CrossPointStateEnum.WhitePiece;
         }
     }
 
@@ -60,12 +49,12 @@ public class Map
             for (int j = 0; j < _boardSize; j++)
             {
                 
-                if (MapArray[i,j] == CrossPointStateEnum.Empty)
+                if (_mapArray[i,j] == CrossPointStateEnum.Empty)
                 {
                     continue;
                 }
 
-                indexPosOfPlacedPieceDict.Add(new Vector2(i, j), MapArray[i, j]);
+                indexPosOfPlacedPieceDict.Add(new Vector2(i, j), _mapArray[i, j]);
             }
         }
 
