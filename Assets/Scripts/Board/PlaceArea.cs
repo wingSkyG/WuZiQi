@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// 棋盘落子区域类
+/// </summary>
 public class PlaceArea
 {
     private GameObject _boardArea;
@@ -10,7 +13,7 @@ public class PlaceArea
     }
     
     /// <summary>
-    /// 点击是否发生在棋盘的落子区
+    /// 点击是否发生在棋盘的落子区域
     /// </summary>
     /// <param name="clickScreenPos"></param>
     /// <param name="boardArea"></param>

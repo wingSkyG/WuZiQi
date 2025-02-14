@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 游戏控制类
+/// </summary>
 public class GameCtrl
 {
-    private IntersectionMap _intersectionMap;
-    private PieceMap _pieceMap;
+    private BoardMap _boardMap;
     private Round _round;
     private Board _board;
     private GameResultView _gameResultView;
@@ -12,8 +14,7 @@ public class GameCtrl
 
     public GameCtrl()
     {
-        _intersectionMap = new IntersectionMap();
-        _pieceMap = new PieceMap();
+        _boardMap = new BoardMap();
         _round = new Round(new BlackPlayState());
         _board = new Board();
         _gameResultView = new GameResultView();
@@ -28,22 +29,21 @@ public class GameCtrl
         {
             var piece = _round.CreatePiece(_board.GetWorldCoord());
             
-            _intersectionMap.UpdateBoardMap(_board.GetIndexCoord(), piece);
-            _pieceMap.UpdatePieceMap(_board.GetIndexCoord(), piece);
+            _boardMap.UpdateBoardMap(_board.GetIndexCoord(), piece);
 
-            if (_intersectionMap.IsFivePiecesLinked(_board.GetIndexCoord()))
+            if (_boardMap.IsFivePiecesLinked(_board.GetIndexCoord()))
             {
                 _gameResultView.DisplayResultText(piece);
             }
             
-            // Debug.Log(_map.IsFivePiecesLinked(_board.GetIndexCoord()));
+            // Debug.Log(_boardMap.GetIndexPosOfPlacedPiece());
+            // Debug.Log(_boardMap.IsFivePiecesLinked(_board.GetIndexCoord()));
         }
     }
 
     private void ResetGame()
     {
-        _intersectionMap.ResetBoardMap();
-        _pieceMap.ResetPieceMap();
+        _boardMap.ResetBoardMap();
         _gameResultView.ClearGameResult();
     }
 }

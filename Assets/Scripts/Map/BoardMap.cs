@@ -3,38 +3,44 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class IntersectionMap
+/// <summary>
+/// 游戏地图
+/// </summary>
+public class BoardMap
 {
     private static int _boardSize = 21;
-    private CrossPointStateEnum[,] _mapArray = new CrossPointStateEnum[_boardSize, _boardSize];
+    private Piece[,] _mapArray = new Piece[_boardSize, _boardSize];
 
-    private FiveSameElementsLinkedIterator _linkedIterator;
+    private FiveSameElementsLinkedIterator _linkedIterator; // 判断五个相同元素相连迭代器
 
-    public IntersectionMap()
+    public BoardMap()
     {
         _linkedIterator = new FiveSameElementsLinkedIterator(_mapArray);
     }
 
+    /// <summary>
+    /// 判断五子是否相连
+    /// </summary>
+    /// <param name="indexCoord"></param>
+    /// <returns></returns>
     public bool IsFivePiecesLinked(Vector2Int indexCoord)
     {
         return _linkedIterator.IsLinked(indexCoord);
     }
 
-    public void UpdateBoardMap(Vector2Int indexCoord, PieceBase pieceBase)
+    /// <summary>
+    /// 更新棋盘地图
+    /// </summary>
+    /// <param name="indexCoord"></param>
+    /// <param name="piece"></param>
+    public void UpdateBoardMap(Vector2Int indexCoord, Piece piece)
     {
-        
-        if (pieceBase.GetType() == typeof(BlackPiece))
-        {
-            _mapArray[indexCoord.x, indexCoord.y] = CrossPointStateEnum.BlackPiece;
-            return;
-        }
-        
-        if (pieceBase.GetType() == typeof(WhitePiece))
-        {
-            _mapArray[indexCoord.x, indexCoord.y] = CrossPointStateEnum.WhitePiece;
-        }
+        _mapArray[indexCoord.x, indexCoord.y] = piece;
     }
 
+    /// <summary>
+    /// 清空棋盘地图
+    /// </summary>
     public void ResetBoardMap()
     {
         for (int i = 0; i < _boardSize; i++)
@@ -42,14 +48,17 @@ public class IntersectionMap
             for (int j = 0; j < _boardSize; j++)
             {
 
-                if (_mapArray[i,j] == CrossPointStateEnum.Empty)
+                if (_mapArray[i,j] == null)
                 {
                     continue;
                 }
-
-                _mapArray[i, j] = CrossPointStateEnum.Empty;
+                
+                _mapArray[i, j].Destroy();
+                _mapArray[i, j] = null;
             }
         }
+
+        _linkedIterator.UpdateIteratorArray(_mapArray);
     }
 
     /// <summary>
@@ -58,7 +67,7 @@ public class IntersectionMap
     /// <returns>坐标点字符串</returns>
     public string GetIndexPosOfPlacedPiece()
     {
-        var indexPosOfPlacedPieceDict = new Dictionary<Vector2, CrossPointStateEnum>();
+        var indexPosOfPlacedPieceDict = new Dictionary<Vector2, Piece>();
         var sb = new StringBuilder();
 
         for (int i = 0; i < _boardSize; i++)
@@ -66,7 +75,7 @@ public class IntersectionMap
             for (int j = 0; j < _boardSize; j++)
             {
                 
-                if (_mapArray[i,j] == CrossPointStateEnum.Empty)
+                if (_mapArray[i,j] == null)
                 {
                     continue;
                 }

@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// 游戏状态基类
+/// </summary>
 public abstract class PlayStateBase
 {
-    public virtual PieceBase CreatePiece(Round round, Vector2 piecePos)
+    protected Piece Piece;
+    
+    public virtual Piece CreatePiece(Round round, Vector2 piecePos)
     {
-        return new PieceBase(piecePos);
+        return Piece;
     }
 }

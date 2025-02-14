@@ -5,37 +5,36 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+/// <summary>
+/// 游戏结果界面
+/// </summary>
 public class GameResultView
 {
-    // private GameObject _gameResultCanvas;
     private TMP_Text _gameResultText;
 
     public GameResultView()
     {
-        // var gameResultCanvasPrefab = Resources.Load("Prefabs/GameResultCanvas");
-        // var gameResultCanvasObj = Object.Instantiate(gameResultCanvasPrefab, GameObject.Find("UIRoot").transform);
-        // gameResultCanvasObj.GameObject().SetActive(true);
         _gameResultText = GameObject.Find("_gameResultText").GetComponent<TMP_Text>();
     }
-
-    // public void Open(PieceBase winner)
-    // {
-    //     DisplayResultText(winner);
-    // }
     
-    public void DisplayResultText(PieceBase winner)
+    /// <summary>
+    /// 显示胜利结果
+    /// </summary>
+    /// <param name="winner"></param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public void DisplayResultText(Piece winner)
     {
         _gameResultText.text = "";
         
-        var winnerTypeName = winner.GetType().Name;
+        var winnerColor = winner.PieceColor;
         var winnerDisplayName = "";
 
-        switch (winnerTypeName)
+        switch (winnerColor)
         {
-            case "BlackPiece":
+            case PieceColorEnum.Black:
                 winnerDisplayName = "黑方";
                 break;
-            case "WhitePiece":
+            case PieceColorEnum.White:
                 winnerDisplayName = "白方";
                 break;
             default:
@@ -45,6 +44,9 @@ public class GameResultView
         _gameResultText.text = winnerDisplayName + "胜利";
     }
     
+    /// <summary>
+    /// 清除游戏结果
+    /// </summary>
     public void ClearGameResult()
     {
         _gameResultText.text = "";

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// 输入类
+/// </summary>
 public class Input
 {
     private static Input _input;
