@@ -1,5 +1,4 @@
 ﻿using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -30,7 +29,7 @@ public class Piece
             default:
                 throw new ArgumentOutOfRangeException(nameof(pieceColor), pieceColor, null);
         }
-        _obj.GameObject().transform.position = new Vector3(position.x, position.y, -1);
+        _obj.transform.position = new Vector3(position.x, position.y, -1);
     }
 
     /// <summary>
