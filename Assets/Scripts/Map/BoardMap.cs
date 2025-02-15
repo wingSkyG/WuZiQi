@@ -19,6 +19,16 @@ public class BoardMap
     }
 
     /// <summary>
+    /// 游戏地图某个元素是否为空
+    /// </summary>
+    /// <param name="elementIndex"></param>
+    /// <returns></returns>
+    public bool IsElementEmpty(Vector2Int elementIndex)
+    {
+        return _mapArray[elementIndex.x, elementIndex.y] == null;
+    }
+    
+    /// <summary>
     /// 判断五子是否相连
     /// </summary>
     /// <param name="indexCoord"></param>

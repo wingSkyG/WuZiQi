@@ -27,10 +27,10 @@ public class GameCtrl
     {
         if (_board.IsClicked())
         {
-            var piece = _round.CreatePiece(_board.GetWorldCoord());
+            if(!_boardMap.IsElementEmpty(_board.GetIndexCoord())) return; // 棋盘上已有棋子，则返回
             
+            var piece = _round.CreatePiece(_board.GetWorldCoord());
             _boardMap.UpdateBoardMap(_board.GetIndexCoord(), piece);
-
             if (_boardMap.IsFivePiecesLinked(_board.GetIndexCoord()))
             {
                 _gameResultView.DisplayResultText(piece);
